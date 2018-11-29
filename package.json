@@ -1,0 +1,35 @@
+{
+  "name": "nodeapps",
+  "version": "1.0.0",
+  "description": "Proxy for all my running node apps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guttih/nodeapps.git"
+  },
+  "keywords": [
+    "node",
+    "js",
+    "nodejs",
+    "apps",
+    "proxy",
+    "for",
+    "my",
+    "apps"
+  ],
+  "author": "guttih",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guttih/nodeapps/issues"
+  },
+  "homepage": "https://github.com/guttih/nodeapps#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "http-proxy-middleware": "^0.19.1"
+  }
+}
