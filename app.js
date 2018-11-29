@@ -2,67 +2,27 @@
 var express = require('express')
 var proxy = require('http-proxy-middleware')
 
-var rootPath = 'http://192.168.1.79';
-var port = 80;
-// proxy middleware rootProxy
-var rootProxy = {
-    target : rootPath, // target host
-    ws     : true, // proxy websockets
-    router :{}
+// proxy middleware options
+var options = {
+  target: 'http://localhost:6000', // target host
+  changeOrigin: true, // needed for virtual hosted sites
+  ws: true, // proxy websockets
+  /*pathRewrite: {
+    '^/api/old-path': '/api/new-path', // rewrite path
+    '^/api/remove/path': '/path' // remove base path
+  },*/
+  router: {
+    // when request.headers.host == 'dev.localhost:3000',
+    // override target 'http://www.example.org' to 'http://localhost:8000'
+	'parts.guttih.com': 'http://localhost:6300',
+	'voff.guttih.com': 'http://localhost:6100',
+  }
 }
-rootProxy.router['voffcon.localhost:'+port]=rootPath+':6100';
-rootProxy.router['parts.localhost:'+port]=rootPath+':6300';
-rootProxy.router['voffcon.guttih.com:'+port]=rootPath+':6100';
-rootProxy.router['parts.guttih.com:'+port]=rootPath+':6300';
 
+// create the proxy (without context)
+var exampleProxy = proxy(options)
 
-var rootProxy = proxy(rootProxy)
-
+// mount `exampleProxy` in web server
 var app = express()
-app.use('/', rootProxy);
-
-
-app.use('/public', rootProxy);
-
-app.listen(port, function (){
-    console.log('listening at port '+port);
-});
-
-
- 
- 
- 
- 
- 
- /*var proxyServer = require('http-route-proxy');
- 
-
-
-proxyServer.proxy([
-    // common config
-    {
-        // origin host + port
-        from: 'localhost:9000/parts',
-        // forward host + port
-        to: '192.168.1.79:6300',
-        // match forward action rule
-        // `"/"` means forward match all actions, 
-        // `!/public` means match local static forward match `/public.*`
-        route: ['/', '!/public']
-    }
-]);
-
-
-proxyServer.proxy([
-    // common config
-    {
-        // origin host + port
-        from: 'localhost:9000',
-        // forward host + port
-        to: '192.168.1.79:6100',
-        // match forward action rule
-        // `"/"` means forward match all actions, 
-        // `!/public` means match local static forward match `/public.*`
-        route: ['/', '!/public']
-    }
-]);*/
+app.use('/', exampleProxy)
+app.listen(80)
