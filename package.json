@@ -27,7 +27,8 @@
   },
   "homepage": "https://github.com/guttih/nodeapps#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "helmet": "^3.18.0"
   },
   "devDependencies": {
     "http-proxy-middleware": "^0.19.1"
